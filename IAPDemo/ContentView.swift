@@ -8,14 +8,31 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @ObservedObject private var viewModel = ViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            List(viewModel.products) { product in
+                HStack {
+                    Image(systemName: "globe")
+                        .imageScale(.large)
+                        .foregroundColor(.accentColor)
+                    Text(product.displayName)
+                    Spacer()
+                    Button(product.displayPrice) {
+                     // purchase
+                        print("purchase")
+                    }
+                }
+            }
+            .padding()
         }
-        .padding()
+        .onAppear {
+            Task {
+                await viewModel.getProducts()                
+            }
+        }
     }
 }
 

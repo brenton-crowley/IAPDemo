@@ -12,6 +12,8 @@
 		843E1FA02994C87300D8C5B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 843E1F9F2994C87300D8C5B5 /* Assets.xcassets */; };
 		843E1FA32994C87300D8C5B5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 843E1FA22994C87300D8C5B5 /* Preview Assets.xcassets */; };
 		843E1FAB2995AB8500D8C5B5 /* IAPProductIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 843E1FAA2995AB8500D8C5B5 /* IAPProductIDs.plist */; };
+		843E1FAD2995ABDE00D8C5B5 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843E1FAC2995ABDE00D8C5B5 /* ViewModel.swift */; };
+		843E1FAF2995ACA800D8C5B5 /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843E1FAE2995ACA800D8C5B5 /* IAPManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		843E1FA22994C87300D8C5B5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		843E1FA92995A9FC00D8C5B5 /* IAPDemoConfig.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = IAPDemoConfig.storekit; path = Resources/IAPDemoConfig.storekit; sourceTree = "<group>"; };
 		843E1FAA2995AB8500D8C5B5 /* IAPProductIDs.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = IAPProductIDs.plist; path = Resources/IAPProductIDs.plist; sourceTree = "<group>"; };
+		843E1FAC2995ABDE00D8C5B5 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		843E1FAE2995ACA800D8C5B5 /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,8 @@
 			children = (
 				843E1F9B2994C87100D8C5B5 /* IAPDemoApp.swift */,
 				843E1F9D2994C87100D8C5B5 /* ContentView.swift */,
+				843E1FAC2995ABDE00D8C5B5 /* ViewModel.swift */,
+				843E1FAE2995ACA800D8C5B5 /* IAPManager.swift */,
 				843E1FA92995A9FC00D8C5B5 /* IAPDemoConfig.storekit */,
 				843E1FAA2995AB8500D8C5B5 /* IAPProductIDs.plist */,
 				843E1F9F2994C87300D8C5B5 /* Assets.xcassets */,
@@ -143,7 +149,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				843E1FAF2995ACA800D8C5B5 /* IAPManager.swift in Sources */,
 				843E1F9E2994C87100D8C5B5 /* ContentView.swift in Sources */,
+				843E1FAD2995ABDE00D8C5B5 /* ViewModel.swift in Sources */,
 				843E1F9C2994C87100D8C5B5 /* IAPDemoApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

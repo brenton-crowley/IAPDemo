@@ -1,0 +1,91 @@
+{
+  "identifier" : "2F9D547D",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "F30D33F1",
+      "localizations" : [
+        {
+          "description" : "Gems",
+          "displayName" : "Gems",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Gems",
+          "displayName" : "Gems",
+          "locale" : "en_AU"
+        }
+      ],
+      "productID" : "com.surfingscratcher.consumable.gems",
+      "referenceName" : "Gems",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "070144BE",
+      "localizations" : [
+        {
+          "description" : "Batman",
+          "displayName" : "Batman",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.surfingscratcher.nonconsumable.Batman",
+      "referenceName" : "Batman Costume",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "D9462377",
+      "localizations" : [
+
+      ],
+      "name" : "Yearly Subscription",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "0.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "EBBCC960",
+          "introductoryOffer" : {
+            "displayPrice" : "99.99",
+            "internalID" : "E2E99182",
+            "paymentMode" : "payUpFront",
+            "subscriptionPeriod" : "P1Y"
+          },
+          "localizations" : [
+            {
+              "description" : "Yearly Subscription",
+              "displayName" : "Yearly Subscription",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.surfingscratcher.autosubscription.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : null,
+          "subscriptionGroupID" : "D9462377",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 2,
+    "minor" : 0
+  }
+}
