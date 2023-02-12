@@ -9,18 +9,52 @@ import Foundation
 import StoreKit
 import Combine
 
-class ViewModel: ObservableObject {
+class ViewModel: ObservableObject, InAppPurchasable {
     
-    @Published private(set) var products: [Product] = []
-    @Published private(set) var purchasedProducts: [Product] = []
+    @Published var products: [Product] = []
+    @Published var purchasedProducts: [Product] = []
     
+    let productIds: [String]
+    var updateListenerTask: Task<Void, Error>?
+    
+    @MainActor
     init() {
         
+        productIds = ViewModel.loadProductIDs()
+        
+        updateListenerTask = listenForTransactions()
+        
+        Task {
+            self.products = await requestProducts()
+            self.purchasedProducts = await updateCustomerProductStatus()
+        }
+    }
+    
+    deinit {
+        updateListenerTask?.cancel()
     }
     
     @MainActor
     func getProducts() async {
-        self.products = await IAPManager.shared.requestProducts().values.flatMap { $0 }
-        
+        self.products = await requestProducts()
+    }
+    
+    @MainActor
+    func purchase(product: Product) {
+        Task{
+            do {
+                guard let result = try await purchaseProduct(product) else { return }
+                    
+                self.purchasedProducts = result.purchasedProducts
+                
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    @MainActor
+    func getIsPurchasedForProduct(_ product: Product) async throws -> Bool {
+        return try await isPurchased(product)
     }
 }
