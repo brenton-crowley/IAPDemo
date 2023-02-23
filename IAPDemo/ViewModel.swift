@@ -17,6 +17,19 @@ class ViewModel: ObservableObject, InAppPurchasable {
     @Published var alertMessage: String?
     @Published var showingAlert: Bool = false
     
+    var sectionedProducts: [Product.ProductType :[Product]] {
+        var groups: [Product.ProductType :[Product]] = [
+            Product.ProductType.consumable:[],
+            Product.ProductType.nonRenewable:[],
+            Product.ProductType.nonConsumable:[],
+            Product.ProductType.autoRenewable:[],
+        ]
+        self.products.forEach { product in
+            groups[product.type]?.append(product)
+        }
+        return groups
+    }
+    
     let productIds: [String]
     var updateListenerTask: Task<Void, Error>?
     
