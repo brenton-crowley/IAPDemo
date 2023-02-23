@@ -7,12 +7,15 @@
 
 import Foundation
 import StoreKit
-import Combine
 
 class ViewModel: ObservableObject, InAppPurchasable {
     
     @Published var products: [Product] = []
     @Published var purchasedProducts: [Product] = []
+    
+    // Alert
+    @Published var alertMessage: String?
+    @Published var showingAlert: Bool = false
     
     let productIds: [String]
     var updateListenerTask: Task<Void, Error>?
@@ -25,8 +28,8 @@ class ViewModel: ObservableObject, InAppPurchasable {
         updateListenerTask = listenForTransactions()
         
         Task {
-            self.products = await requestProducts()
-            self.purchasedProducts = await updateCustomerProductStatus()
+            await requestProducts()
+            await updateCustomerProductStatus()
         }
     }
     
@@ -35,17 +38,10 @@ class ViewModel: ObservableObject, InAppPurchasable {
     }
     
     @MainActor
-    func getProducts() async {
-        self.products = await requestProducts()
-    }
-    
-    @MainActor
     func purchase(product: Product) {
-        Task{
+        Task {
             do {
-                guard let result = try await purchaseProduct(product) else { return }
-                    
-                self.purchasedProducts = result.purchasedProducts
+                guard let _ = try await purchaseProduct(product) else { return }
                 
             } catch {
                 print(error)
@@ -57,4 +53,12 @@ class ViewModel: ObservableObject, InAppPurchasable {
     func getIsPurchasedForProduct(_ product: Product) async throws -> Bool {
         return try await isPurchased(product)
     }
+    
+    // user initiated
+    func restorePurchases() {
+        Task {
+            try? await AppStore.sync()
+        }
+    }
+    
 }

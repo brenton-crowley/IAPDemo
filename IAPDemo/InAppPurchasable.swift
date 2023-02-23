@@ -15,13 +15,16 @@ enum IAPManagerError: Error {
     case paymentFailed
     case productRequestFailed
     case failedVerification
+    case testError
 }
 
-protocol InAppPurchasable {
+protocol InAppPurchasable: AnyObject {
     
     static var productPlistName: String { get }
 
     var productIds: [String] { get }
+    var alertMessage: String? { get set }
+    var showingAlert: Bool { get set }
     var products: [Product] { get set }
     var purchasedProducts: [Product] { get set }
     var updateListenerTask: Task<Void, Error>? { get }
@@ -29,17 +32,15 @@ protocol InAppPurchasable {
     static func loadProductIDs() -> [String]
     
     func listenForTransactions() -> Task<Void, Error>
-    func requestProducts() async -> [Product]
-    func purchaseProduct(_ product:Product) async throws -> (transaction: Transaction?, purchasedProducts: [Product])?
+    func requestProducts() async
+    func purchaseProduct(_ product:Product) async throws -> Transaction?
     func isPurchased(_ product: Product) async throws -> Bool
-    @discardableResult func updateCustomerProductStatus() async -> [Product]
+    func updateCustomerProductStatus() async
 }
 
 // default variable implementation
 extension InAppPurchasable {
     
-    var products: [Product] { [] }
-    var purchasedProducts: [Product] { [] }
     var productIds: [String] { [] }
     static var productPlistName: String { "IAPProductIDs" }
     
@@ -54,6 +55,7 @@ extension InAppPurchasable {
               let plist = try? Data(contentsOf: url),
               let data = try? PropertyListSerialization.propertyList(from:plist, format: nil) as? [String] else {
             print("Couldn't make plist")
+
             return []
         }
         
@@ -64,18 +66,22 @@ extension InAppPurchasable {
 // MARK: - Request Products
 extension InAppPurchasable {
     
-    func requestProducts() async -> [Product] {
+    @MainActor
+    func requestProducts() async {
+        
+        self.products = []
         
         do {
+            
             let storeProducts = try await Product.products(for: productIds)
             
-            return sortByPrice(storeProducts)
+            self.products = sortByPrice(storeProducts)
             
         } catch {
             print("Failed product request from the App Store server: \(error)")
+            self.alertMessage = "Failed product request from the App Store server: \(error)"
+            self.showingAlert.toggle()
         }
-        
-        return []
     }
     
     private func sortByPrice(_ products: [Product]) -> [Product] {
@@ -86,7 +92,8 @@ extension InAppPurchasable {
 // MARK: - Purchase Product
 extension InAppPurchasable {
     
-    func purchaseProduct(_ product:Product) async throws -> (transaction: Transaction?, purchasedProducts: [Product])? {
+    @MainActor
+    func purchaseProduct(_ product:Product) async throws -> Transaction? {
         let result = try await product.purchase()
         
         switch result {
@@ -95,11 +102,11 @@ extension InAppPurchasable {
             // check whether or not the transaction is verified
             let transaction = try checkVerified(verification)
             
-            let purchasedProducts = await updateCustomerProductStatus()
+            await updateCustomerProductStatus()
             
             await transaction.finish()
             
-            return (transaction, purchasedProducts)
+            return transaction
         case .userCancelled, .pending:
             return nil
         default:
@@ -123,30 +130,34 @@ extension InAppPurchasable {
 // MARK: - Update Products
 extension InAppPurchasable {
     
-    func updateCustomerProductStatus() async -> [Product] {
+    @MainActor
+    func updateCustomerProductStatus() async {
         var purchasedProducts: [Product] = []
         
         //iterate through all the user's purchased products - currentEntitlements doesn't return Consumable in-app purchases use all for that
         for await result in Transaction.currentEntitlements {
             do {
-                //again check if transaction is verified
-                switch result {
-                case .verified(let transaction):
+                let transaction = try checkVerified(result)
+                
+                switch transaction.productType {
+                    
+                case .nonConsumable, .autoRenewable, .nonRenewable:
                     if let product = products.first(where: { $0.id == transaction.productID}) {
                         purchasedProducts.append(product)
                     }
-                case .unverified:
-                    throw  IAPManagerError.failedVerification
+                default:
+                    break
+                    
                 }
                 
             } catch {
                 //storekit has a transaction that fails verification, don't delvier content to the user
                 print("Transaction failed verification")
+                self.alertMessage = "Transaction failed verification"
+                self.showingAlert = true
             }
-            
-            return purchasedProducts
         }
-        return []
+        self.purchasedProducts = purchasedProducts
     }
     
 }
@@ -166,12 +177,13 @@ extension InAppPurchasable {
                     
                     let transaction = try self.checkVerified(result)
                     
-                    // TODO: possible bug here as I'm not assigning the result to the purchased products. Could use a possible delegate call or change the signature of the function?
                     await self.updateCustomerProductStatus()
                     
                     await transaction.finish() // always complete a transaction
                 } catch {
                     print("Transaction failed verification")
+                    self.alertMessage = "Transaction failed verification"
+                    self.showingAlert = true
                 }
             }
         }
