@@ -10,18 +10,18 @@
       "internalID" : "F30D33F1",
       "localizations" : [
         {
-          "description" : "Gems",
-          "displayName" : "Gems",
+          "description" : "Coins",
+          "displayName" : "🪙 Coins",
           "locale" : "en_US"
         },
         {
-          "description" : "Gems",
-          "displayName" : "Gems",
+          "description" : "Coins",
+          "displayName" : "🪙 Coins",
           "locale" : "en_AU"
         }
       ],
-      "productID" : "com.surfingscratcher.consumable.gems",
-      "referenceName" : "Gems",
+      "productID" : "com.surfingscratcher.consumable.coins",
+      "referenceName" : "Coins",
       "type" : "Consumable"
     },
     {
@@ -30,13 +30,13 @@
       "internalID" : "070144BE",
       "localizations" : [
         {
-          "description" : "Batman",
-          "displayName" : "Batman",
+          "description" : "Premium Video",
+          "displayName" : "🎥 Premium Video",
           "locale" : "en_US"
         }
       ],
-      "productID" : "com.surfingscratcher.nonconsumable.Batman",
-      "referenceName" : "Batman Costume",
+      "productID" : "com.surfingscratcher.nonconsumable.premiumVideo",
+      "referenceName" : "Premium Video",
       "type" : "NonConsumable"
     }
   ],
@@ -71,13 +71,13 @@
           "localizations" : [
             {
               "description" : "Yearly Subscription",
-              "displayName" : "Yearly Subscription",
+              "displayName" : "🔁 Yearly Subscription",
               "locale" : "en_US"
             }
           ],
           "productID" : "com.surfingscratcher.autosubscription.yearly",
           "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : null,
+          "referenceName" : "Yearly Subscription",
           "subscriptionGroupID" : "D9462377",
           "type" : "RecurringSubscription"
         }

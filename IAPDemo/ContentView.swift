@@ -18,7 +18,6 @@ struct ContentView: View {
                 ProductRow(product: product, viewModel: viewModel)
                 
             }
-            .padding()
             .toolbar {
                 Button {
                     viewModel.restorePurchases()
@@ -46,9 +45,6 @@ struct ProductRow: View {
     
     var body: some View {
         HStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
             Text(product.displayName)
             Spacer()
             Button(isPurchased ? "✅" : product.displayPrice) {
