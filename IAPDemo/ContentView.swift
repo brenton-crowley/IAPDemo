@@ -14,35 +14,9 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-//            List(viewModel.products) { product in
-//                ProductRow(product: product, viewModel: viewModel)
-//
-//            }
-            List {
-                
-                Section(Product.ProductType.consumable.localizedDescription) {
-                    ForEach(viewModel.sectionedProducts[Product.ProductType.consumable] ?? []) { consumable in
-                        Text(consumable.displayName)
-                    }
-                }
+            List(viewModel.products) { product in
+                ProductRow(product: product, viewModel: viewModel)
 
-                Section(Product.ProductType.nonConsumable.localizedDescription) {
-                    ForEach(viewModel.sectionedProducts[Product.ProductType.nonConsumable] ?? []) { consumable in
-                        Text(consumable.displayName)
-                    }
-                }
-                
-                Section(Product.ProductType.autoRenewable.localizedDescription) {
-                    ForEach(viewModel.sectionedProducts[Product.ProductType.autoRenewable] ?? []) { consumable in
-                        Text(consumable.displayName)
-                    }
-                }
-                
-                Section(Product.ProductType.nonRenewable.localizedDescription) {
-                    ForEach(viewModel.sectionedProducts[Product.ProductType.nonRenewable] ?? []) { consumable in
-                        Text(consumable.displayName)
-                    }
-                }
             }
             .toolbar {
                 Button {
@@ -60,6 +34,37 @@ struct ContentView: View {
             }
             
         }
+    }
+    
+    var sections: some View {
+        
+        List {
+            
+            Section(Product.ProductType.consumable.localizedDescription) {
+                ForEach(viewModel.sectionedProducts[Product.ProductType.consumable] ?? []) { consumable in
+                    Text(consumable.displayName)
+                }
+            }
+
+            Section(Product.ProductType.nonConsumable.localizedDescription) {
+                ForEach(viewModel.sectionedProducts[Product.ProductType.nonConsumable] ?? []) { consumable in
+                    Text(consumable.displayName)
+                }
+            }
+            
+            Section(Product.ProductType.autoRenewable.localizedDescription) {
+                ForEach(viewModel.sectionedProducts[Product.ProductType.autoRenewable] ?? []) { consumable in
+                    Text(consumable.displayName)
+                }
+            }
+            
+            Section(Product.ProductType.nonRenewable.localizedDescription) {
+                ForEach(viewModel.sectionedProducts[Product.ProductType.nonRenewable] ?? []) { consumable in
+                    Text(consumable.displayName)
+                }
+            }
+        }
+        
     }
 }
 
